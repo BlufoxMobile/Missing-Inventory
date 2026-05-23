@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Missing Inventory Form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-grad-1: #0b1437;
+    --bg-grad-2: #1a2a6c;
+    --bg-grad-3: #2a5298;
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --card-border: rgba(255, 255, 255, 0.18);
+    --accent: #4f46e5;
+    --accent-2: #06b6d4;
+    --accent-grad: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+    --success: #10b981;
+    --danger: #ef4444;
+    --warn: #f59e0b;
+    --text: #0f172a;
+    --text-muted: #475569;
+    --border: #e2e8f0;
+    --input-bg: #f8fafc;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+    --shadow-lg: 0 24px 48px rgba(15, 23, 42, 0.18);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    background:
+      radial-gradient(1200px 800px at 10% -10%, rgba(6, 182, 212, 0.25), transparent 60%),
+      radial-gradient(1200px 800px at 110% 10%, rgba(79, 70, 229, 0.35), transparent 60%),
+      linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 55%, var(--bg-grad-3) 100%);
+    background-attachment: fixed;
+  }
+  .wrap {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+  .hero {
+    color: #fff;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .hero .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #c7d2fe;
+    background: rgba(255,255,255,0.08);
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.14);
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-size: clamp(28px, 4.6vw, 44px);
+    line-height: 1.1;
+    margin: 0 0 8px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #ffffff 0%, #c7e7ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    margin: 0 auto;
+    max-width: 640px;
+    color: rgba(255,255,255,0.78);
+    font-size: 15px;
+  }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(14px);
+    border-radius: 18px;
+    box-shadow: var(--shadow-lg);
+    padding: 28px;
+    margin-bottom: 18px;
+  }
+  .card h2 {
+    margin: 0 0 6px;
+    font-size: 18px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card .icon-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--accent-grad);
+    color: #fff;
+    font-size: 14px;
+  }
+  .card .sub {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 18px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 700px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  label .req { color: var(--danger); }
+  input[type="text"],
+  input[type="email"],
+  select {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--text);
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+    outline: none;
+  }
+  input[readonly] {
+    background: #f1f5f9;
+    color: var(--text-muted);
+    cursor: not-allowed;
+  }
+  input:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.18);
+    background: #fff;
+  }
+  .directions {
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.08), rgba(6, 182, 212, 0.08));
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+    padding: 16px 18px;
+    color: var(--text);
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+  .directions strong { color: var(--accent); }
+
+  .scans-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .counter {
+    font-size: 13px;
+    color: var(--text-muted);
+    background: #eef2ff;
+    border: 1px solid #e0e7ff;
+    color: #3730a3;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+  .counter .num { color: var(--accent); }
+
+  .scan-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 14px;
+  }
+  @media (min-width: 720px) {
+    .scan-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .scan-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 10px;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .scan-row.filled {
+    background: #ecfdf5;
+    border-color: #a7f3d0;
+  }
+  .scan-row .num-tag {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 7px;
+    min-width: 36px;
+    text-align: center;
+    letter-spacing: 0.02em;
+  }
+  .scan-row.filled .num-tag {
+    color: #047857;
+    background: #d1fae5;
+    border-color: #6ee7b7;
+  }
+  .scan-row input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 6px 0;
+    font-size: 14px;
+    outline: none;
+    min-width: 0;
+  }
+  .scan-row .clear-one {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+    display: none;
+  }
+  .scan-row.filled .clear-one { display: inline-block; }
+  .scan-row .clear-one:hover { color: var(--danger); }
+
+  .actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 22px;
+    flex-wrap: wrap;
+  }
+  button.btn {
+    flex: 1;
+    min-width: 160px;
+    padding: 14px 18px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: inherit;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.08s ease, box-shadow 0.15s ease, background 0.15s ease, opacity 0.15s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  button.btn:active { transform: translateY(1px); }
+  .btn-primary {
+    background: var(--accent-grad);
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(79, 70, 229, 0.35);
+  }
+  .btn-primary:hover { box-shadow: 0 14px 32px rgba(79, 70, 229, 0.45); }
+  .btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  .btn-ghost {
+    background: #fff;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover { background: #f8fafc; }
+  .btn-danger {
+    background: #fff;
+    color: var(--danger);
+    border: 1px solid #fecaca;
+  }
+  .btn-danger:hover { background: #fef2f2; }
+
+  .toast {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 28px;
+    background: #0f172a;
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 999px;
+    box-shadow: var(--shadow-lg);
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+    z-index: 1000;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
+  .toast.success { background: #065f46; }
+  .toast.error { background: #7f1d1d; }
+
+  .footer {
+    text-align: center;
+    color: rgba(255,255,255,0.55);
+    font-size: 12px;
+    margin-top: 10px;
+  }
+
+  .loading-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-style: italic;
+  }
+  .spinner {
+    width: 14px; height: 14px;
+    border: 2px solid #cbd5e1;
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Confirm modal */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1100;
+    padding: 20px;
+  }
+  .modal-backdrop.show { display: flex; }
+  .modal {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: var(--shadow-lg);
+  }
+  .modal h3 { margin: 0 0 8px; font-size: 18px; }
+  .modal p { margin: 0 0 16px; color: var(--text-muted); font-size: 14px; }
+  .modal .actions { margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="badge">Blufox Mobile · Inventory Tools</div>
+    <h1>Missing Inventory Form</h1>
+    <p>Scan returned equipment back into your store's inventory in seconds.</p>
+  </div>
+
+  <!-- Directions -->
+  <div class="card">
+    <h2><span class="icon-pill">i</span> Directions</h2>
+    <div class="directions">
+      Scan each piece of missing inventory. Once this is scanned into the form, it can take up to <strong>24 hours</strong> to be reentered back into your inventory. You will receive an email once it is back in your inventory, ready to be used. <strong>Thank you!</strong>
+    </div>
+  </div>
+
+  <!-- Store info -->
+  <form id="invForm" autocomplete="off" novalidate>
+    <div class="card">
+      <h2><span class="icon-pill">1</span> Store Information</h2>
+      <p class="sub">Pick your store.</p>
+      <div>
+        <label for="storeSelect">Store <span class="req">*</span></label>
+        <select id="storeSelect" required>
+          <option value="">Please Select</option>
+        </select>
+      </div>
+      <!-- Hidden fields — used by the Zap, not shown to employees -->
+      <input type="hidden" id="siteId" />
+      <input type="hidden" id="managerName" />
+      <input type="hidden" id="managerEmail" />
+      <input type="hidden" id="dmEmail" />
+    </div>
+
+    <!-- Scans -->
+    <div class="card">
+      <h2><span class="icon-pill">2</span> Scan UPCs</h2>
+      <p class="sub">Use your scanner — the next box is selected automatically after each scan.</p>
+      <div class="scans-meta">
+        <div class="counter">Scanned: <span class="num" id="scanCount">0</span> / <span id="scanTotal">20</span></div>
+        <button type="button" id="addMoreBtn" class="btn btn-ghost" style="flex: 0 0 auto; min-width: auto; padding: 8px 14px; font-size: 13px;">
+          + Add 20 more
+        </button>
+      </div>
+      <div class="scan-grid" id="scanGrid"></div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn btn-danger" id="clearBtn">Clear All Scans</button>
+      <button type="submit" class="btn btn-primary" id="submitBtn">Submit Missing Inventory</button>
+    </div>
+  </form>
+
+  <div class="footer">© Blufox Mobile · Internal use only</div>
+</div>
+
+<div class="toast" id="toast">Saved</div>
+
+<!-- Confirm clear modal -->
+<div class="modal-backdrop" id="confirmModal">
+  <div class="modal">
+    <h3>Clear all scans?</h3>
+    <p>This will remove every UPC you've scanned. This cannot be undone.</p>
+    <div class="actions">
+      <button type="button" class="btn btn-ghost" id="cancelClear">Cancel</button>
+      <button type="button" class="btn btn-danger" id="confirmClear">Yes, clear</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   CONFIG
+   ===================================================================== */
+const WEBHOOK_URL = "https://hooks.zapier.com/hooks/catch/20441079/uqqmsli/";
+const DIRECTORY_URL = "https://raw.githubusercontent.com/blufoxmobile/Daily-Sales-Report/main/data/store-directory.json";
+
+const MAX_SCANS = 60;
+const SCANS_PER_BATCH = 20;
+
+// Maps the simple store names (used on the Jotform) to the directory's
+// "<City> Xfinity Store" naming convention, plus a Site ID for each one.
+// Site IDs are taken from the original Jotform dropdown.
+const STORES = [
+  { label: "Bourbonnais",        directoryKey: "Bourbonnais Xfinity Store",      siteId: "BPBFX081" },
+  { label: "Burbank",            directoryKey: "Burbank Xfinity Store",          siteId: "BPBFX065" },
+  { label: "Cicero",             directoryKey: "Cicero Xfinity Store",           siteId: "BPBFX078" },
+  { label: "Dekalb",             directoryKey: "Dekalb Xfinity Store",           siteId: "BPBFX072" },
+  { label: "Elkhart",            directoryKey: "Elkhart Xfinity Store",          siteId: "BPBFX074" },
+  { label: "Evanston",           directoryKey: "Evanston Xfinity Store",         siteId: "BPBFX077" },
+  { label: "Evergreen Park",     directoryKey: "Evergreen Park Xfinity Store",   siteId: "BPBFX080" },
+  { label: "Frankfort",          directoryKey: "Frankfort Xfinity Store",        siteId: "BPBFX075" },
+  { label: "Glenview",           directoryKey: "Glenview Xfinity Store",         siteId: "BPBFX070" },
+  { label: "Greeneville",        directoryKey: "Greeneville Xfinity Store",      siteId: "BPBFX40"  },
+  { label: "Hammond",            directoryKey: "Hammond Xfinity Store",          siteId: "BPBFX069" },
+  { label: "Johnson City",       directoryKey: "Johnson City Xfinity Store",     siteId: "BPBFX136" },
+  { label: "Kildeer",            directoryKey: "Kildeer Xfinity Store",          siteId: "BPBFX073" },
+  { label: "Michigan City",      directoryKey: "Michigan City Xfinity Store",    siteId: "BPBFX141" },
+  { label: "Oak Ridge",          directoryKey: "Oak Ridge Xfinity Store",        siteId: "BPBFX33"  },
+  { label: "Round Lake Beach",   directoryKey: "Round Lake Beach Xfinity Store", siteId: "BPBFX137" },
+  { label: "Schererville",       directoryKey: "Schererville Xfinity Store",     siteId: "BPBFX067" },
+  { label: "South Bend",         directoryKey: "South Bend Xfinity Store",       siteId: "BPBFX140" },
+  { label: "South Knoxville",    directoryKey: "South Knoxville Xfinity Store",  siteId: "BPBFX132" },
+  { label: "South Skokie",       directoryKey: "South Skokie Xfinity Store",     siteId: "BPBFX066" },
+  { label: "Tinley Park",        directoryKey: "Tinley Park Xfinity Store",      siteId: "BPBFX076" },
+  { label: "Uptown",             directoryKey: "Uptown Xfinity Store",           siteId: "BPBFX097" },
+  { label: "Valparaiso",         directoryKey: "Valparaiso Xfinity Store",       siteId: "BPBFX071" }
+];
+
+/* =====================================================================
+   STATE
+   ===================================================================== */
+let directory = null;
+let directoryLoadError = null;
+let visibleScanCount = SCANS_PER_BATCH;
+
+/* =====================================================================
+   ELEMENTS
+   ===================================================================== */
+const storeSelect    = document.getElementById('storeSelect');
+const siteIdInput    = document.getElementById('siteId');
+const managerName    = document.getElementById('managerName');
+const managerEmail   = document.getElementById('managerEmail');
+const dmEmail        = document.getElementById('dmEmail');
+const scanGrid       = document.getElementById('scanGrid');
+const scanCountEl    = document.getElementById('scanCount');
+const scanTotalEl    = document.getElementById('scanTotal');
+const addMoreBtn     = document.getElementById('addMoreBtn');
+const clearBtn       = document.getElementById('clearBtn');
+const submitBtn      = document.getElementById('submitBtn');
+const toastEl        = document.getElementById('toast');
+const confirmModal   = document.getElementById('confirmModal');
+const cancelClear    = document.getElementById('cancelClear');
+const confirmClear   = document.getElementById('confirmClear');
+const form           = document.getElementById('invForm');
+
+/* =====================================================================
+   INIT
+   ===================================================================== */
+populateStoreOptions();
+renderScanRows();
+loadDirectory();
+
+storeSelect.addEventListener('change', onStoreChange);
+addMoreBtn.addEventListener('click', addMoreRows);
+clearBtn.addEventListener('click', () => { confirmModal.classList.add('show'); });
+cancelClear.addEventListener('click', () => { confirmModal.classList.remove('show'); });
+confirmClear.addEventListener('click', () => {
+  clearAllScans();
+  confirmModal.classList.remove('show');
+});
+form.addEventListener('submit', onSubmit);
+
+/* =====================================================================
+   STORE DROPDOWN
+   ===================================================================== */
+function populateStoreOptions() {
+  STORES.forEach((s) => {
+    const opt = document.createElement('option');
+    opt.value = s.label;
+    opt.textContent = s.label;
+    storeSelect.appendChild(opt);
+  });
+}
+
+async function loadDirectory() {
+  try {
+    const res = await fetch(DIRECTORY_URL, { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    directory = await res.json();
+    if (storeSelect.value) onStoreChange();
+  } catch (err) {
+    directoryLoadError = err;
+    console.error('Failed to load directory:', err);
+    showToast('Could not load store directory — fields may not auto-fill', 'error');
+  }
+}
+
+function onStoreChange() {
+  const label = storeSelect.value;
+  if (!label) {
+    siteIdInput.value = '';
+    managerName.value = '';
+    managerEmail.value = '';
+    dmEmail.value = '';
+    return;
+  }
+  const store = STORES.find(s => s.label === label);
+  if (!store) return;
+  siteIdInput.value = store.siteId || '';
+
+  if (!directory) {
+    managerName.value = 'Loading…';
+    managerEmail.value = 'Loading…';
+    dmEmail.value = 'Loading…';
+    return;
+  }
+
+  const key = store.directoryKey;
+  managerName.value  = (directory.storeManagerNames && directory.storeManagerNames[key]) || '';
+  managerEmail.value = (directory.storeManagers && directory.storeManagers[key]) || '';
+  dmEmail.value      = (directory.storeDMs && directory.storeDMs[key]) || '';
+}
+
+/* =====================================================================
+   SCAN ROWS
+   ===================================================================== */
+function renderScanRows() {
+  scanGrid.innerHTML = '';
+  for (let i = 1; i <= visibleScanCount; i++) {
+    scanGrid.appendChild(makeRow(i));
+  }
+  updateScanCount();
+  updateAddMoreVisibility();
+}
+
+function makeRow(n) {
+  const row = document.createElement('label');
+  row.className = 'scan-row';
+  row.dataset.idx = n;
+
+  const tag = document.createElement('span');
+  tag.className = 'num-tag';
+  tag.textContent = 'UPC ' + n;
+
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.name = 'upc_' + n;
+  input.placeholder = 'Scan or type UPC';
+  input.autocomplete = 'off';
+  input.inputMode = 'numeric';
+  input.spellcheck = false;
+
+  // Auto-advance: scanners send Enter at the end of each scan.
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      advanceFrom(n);
+    }
+  });
+  // Also auto-advance for very fast scanner input that doesn't send Enter:
+  // when the value reaches a typical UPC length and no key has been pressed
+  // for a brief moment.
+  let autoTimer = null;
+  input.addEventListener('input', () => {
+    row.classList.toggle('filled', !!input.value.trim());
+    updateScanCount();
+    clearTimeout(autoTimer);
+    const v = input.value.trim();
+    if (v.length >= 11) {
+      autoTimer = setTimeout(() => {
+        if (document.activeElement === input && input.value.trim().length >= 11) {
+          advanceFrom(n);
+        }
+      }, 180);
+    }
+  });
+
+  const clearOne = document.createElement('button');
+  clearOne.type = 'button';
+  clearOne.className = 'clear-one';
+  clearOne.setAttribute('aria-label', 'Clear this UPC');
+  clearOne.innerHTML = '&times;';
+  clearOne.addEventListener('click', (e) => {
+    e.preventDefault();
+    input.value = '';
+    row.classList.remove('filled');
+    input.focus();
+    updateScanCount();
+  });
+
+  row.appendChild(tag);
+  row.appendChild(input);
+  row.appendChild(clearOne);
+  return row;
+}
+
+function advanceFrom(n) {
+  // Find the next visible empty input; if none, focus the next index;
+  // if we're at the end and there's room, expand and focus the first new row.
+  for (let i = n + 1; i <= visibleScanCount; i++) {
+    const inp = scanGrid.querySelector('input[name="upc_' + i + '"]');
+    if (inp && !inp.value.trim()) { inp.focus(); inp.select?.(); return; }
+  }
+  // No empty downstream — if there's room, expand and focus the next row.
+  if (visibleScanCount < MAX_SCANS) {
+    addMoreRows();
+    const inp = scanGrid.querySelector('input[name="upc_' + (n + 1) + '"]');
+    if (inp) { inp.focus(); inp.select?.(); return; }
+  }
+  // Otherwise jump to the very next index even if filled, so the cursor moves
+  const inp = scanGrid.querySelector('input[name="upc_' + Math.min(n + 1, visibleScanCount) + '"]');
+  if (inp) inp.focus();
+}
+
+function addMoreRows() {
+  if (visibleScanCount >= MAX_SCANS) return;
+  const start = visibleScanCount + 1;
+  const end = Math.min(visibleScanCount + SCANS_PER_BATCH, MAX_SCANS);
+  for (let i = start; i <= end; i++) {
+    scanGrid.appendChild(makeRow(i));
+  }
+  visibleScanCount = end;
+  scanTotalEl.textContent = visibleScanCount;
+  updateAddMoreVisibility();
+}
+
+function updateAddMoreVisibility() {
+  scanTotalEl.textContent = visibleScanCount;
+  if (visibleScanCount >= MAX_SCANS) {
+    addMoreBtn.disabled = true;
+    addMoreBtn.textContent = 'Max 60 reached';
+    addMoreBtn.style.opacity = 0.55;
+  } else {
+    addMoreBtn.disabled = false;
+    addMoreBtn.textContent = '+ Add 20 more';
+    addMoreBtn.style.opacity = 1;
+  }
+}
+
+function updateScanCount() {
+  const filled = scanGrid.querySelectorAll('.scan-row.filled').length;
+  scanCountEl.textContent = filled;
+  // Also auto-expand when the user fills the last visible row by typing
+  // (covers the case where they manually type without pressing Enter).
+  if (filled >= visibleScanCount && visibleScanCount < MAX_SCANS) {
+    addMoreRows();
+  }
+}
+
+function clearAllScans() {
+  visibleScanCount = SCANS_PER_BATCH;
+  renderScanRows();
+  showToast('All scans cleared');
+}
+
+/* =====================================================================
+   SUBMIT
+   ===================================================================== */
+function getScans() {
+  const arr = [];
+  scanGrid.querySelectorAll('input').forEach((inp) => {
+    const v = inp.value.trim();
+    if (v) arr.push(v);
+  });
+  return arr;
+}
+
+async function onSubmit(e) {
+  e.preventDefault();
+
+  // Validation
+  if (!storeSelect.value) {
+    showToast('Please select your store', 'error');
+    storeSelect.focus();
+    return;
+  }
+  const upcs = getScans();
+  if (upcs.length === 0) {
+    showToast('Scan at least one UPC before submitting', 'error');
+    return;
+  }
+
+  // Payload sent to the Zap. Shape is flat for easy Zapier mapping.
+  const store = STORES.find(s => s.label === storeSelect.value);
+  const payload = {
+    submittedAt: new Date().toISOString(),
+    store: storeSelect.value,
+    directoryKey: store ? store.directoryKey : storeSelect.value,
+    siteId: siteIdInput.value,
+    storeManagerName: managerName.value,
+    storeManagerEmail: managerEmail.value,
+    districtManagerEmail: dmEmail.value,
+    upcCount: upcs.length,
+    upcs: upcs,
+    // Also flatten as upc_1, upc_2, … so Zapier can map them individually.
+    ...flattenUpcs(upcs)
+  };
+
+  submitBtn.disabled = true;
+  const oldLabel = submitBtn.innerHTML;
+  submitBtn.innerHTML = '<span class="spinner" style="border-color: rgba(255,255,255,0.4); border-top-color: #fff;"></span> Submitting…';
+
+  try {
+    // Zapier catch hooks accept simple JSON POSTs. We use no-cors as a safety
+    // net (the hook still receives the body); we treat any non-throw as success.
+    await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      mode: 'no-cors',
+      body: JSON.stringify(payload)
+    });
+    showToast('Submitted! ' + upcs.length + ' UPCs sent.', 'success');
+    // Reset after a moment so the user sees the confirmation.
+    setTimeout(() => {
+      clearAllScans();
+      // Keep store + employee email so they can submit again quickly.
+    }, 900);
+  } catch (err) {
+    console.error(err);
+    showToast('Could not submit — check connection and try again', 'error');
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = oldLabel;
+  }
+}
+
+function flattenUpcs(upcs) {
+  const out = {};
+  for (let i = 0; i < MAX_SCANS; i++) {
+    out['upc_' + (i + 1)] = upcs[i] || '';
+  }
+  return out;
+}
+
+/* =====================================================================
+   TOAST
+   ===================================================================== */
+let toastTimer = null;
+function showToast(msg, type) {
+  toastEl.textContent = msg;
+  toastEl.className = 'toast show' + (type ? ' ' + type : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toastEl.classList.remove('show');
+  }, 2600);
+}
+</script>
+</body>
+</html>
