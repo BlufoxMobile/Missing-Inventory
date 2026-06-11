@@ -395,6 +395,7 @@
       <input type="hidden" id="managerName" />
       <input type="hidden" id="managerEmail" />
       <input type="hidden" id="dmEmail" />
+      <input type="hidden" id="asmEmail" />
     </div>
 
     <!-- Scans -->
@@ -487,6 +488,7 @@ const siteIdInput    = document.getElementById('siteId');
 const managerName    = document.getElementById('managerName');
 const managerEmail   = document.getElementById('managerEmail');
 const dmEmail        = document.getElementById('dmEmail');
+const asmEmail       = document.getElementById('asmEmail');
 const scanGrid       = document.getElementById('scanGrid');
 const scanCountEl    = document.getElementById('scanCount');
 const scanTotalEl    = document.getElementById('scanTotal');
@@ -548,6 +550,7 @@ function onStoreChange() {
     managerName.value = '';
     managerEmail.value = '';
     dmEmail.value = '';
+    asmEmail.value = '';
     return;
   }
   const store = STORES.find(s => s.label === label);
@@ -558,6 +561,7 @@ function onStoreChange() {
     managerName.value = 'Loading…';
     managerEmail.value = 'Loading…';
     dmEmail.value = 'Loading…';
+    asmEmail.value = '';
     return;
   }
 
@@ -565,6 +569,7 @@ function onStoreChange() {
   managerName.value  = (directory.storeManagerNames && directory.storeManagerNames[key]) || '';
   managerEmail.value = (directory.storeManagers && directory.storeManagers[key]) || '';
   dmEmail.value      = (directory.storeDMs && directory.storeDMs[key]) || '';
+  asmEmail.value     = (directory.storeAMs && directory.storeAMs[key]) || '';
 }
 
 /* =====================================================================
@@ -736,6 +741,7 @@ async function onSubmit(e) {
     storeManagerName: managerName.value,
     storeManagerEmail: managerEmail.value,
     districtManagerEmail: dmEmail.value,
+    asmEmail: asmEmail.value,
     upcCount: upcs.length,
     upcs: upcs,
     // Also flatten as upc_1, upc_2, … so Zapier can map them individually.
